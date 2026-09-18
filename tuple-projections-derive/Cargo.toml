@@ -3,9 +3,12 @@ name = "tuple-projections-derive"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
-description = "Derive and helper procedural macros for tuple-projections."
+description = "Procedural macros for deriving tuple representations and left projections."
+documentation = "https://docs.rs/tuple-projections-derive"
 repository.workspace = true
 license.workspace = true
+keywords = ["tuple", "projection", "derive", "proc-macro"]
+categories = ["development-tools::procedural-macro-helpers"]
 
 [lib]
 proc-macro = true
