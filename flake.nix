@@ -98,6 +98,20 @@
                   inherit cargoArtifacts;
                 }
               );
+
+              # Keep semver compatibility as an explicit runnable check. It is
+              # intentionally a package rather than a default flake check because
+              # the registry baseline exists only after the crate is published.
+              semverCheck = pkgs.writeShellApplication {
+                name = "check-cargo-semver";
+                runtimeInputs = [
+                  rustToolchain
+                  pkgs.cargo-semver-checks
+                ];
+                text = ''
+                  exec cargo semver-checks --workspace "$@"
+                '';
+              };
             in
             {
               treefmt = {
@@ -113,7 +127,10 @@
                 };
               };
 
-              packages.default = package;
+              packages = {
+                default = package;
+                check-cargo-semver = semverCheck;
+              };
 
               checks = {
                 build = package;
@@ -145,6 +162,7 @@
                   rustToolchain
                   pkgs.cargo-audit
                   pkgs.cargo-nextest
+                  pkgs.cargo-semver-checks
                   pkgs.rust-analyzer
                 ];
               };
