@@ -1,0 +1,49 @@
+[workspace]
+members = ["tuple-projections-derive"]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.92"
+repository = "https://github.com/alekseysidorov/tuple-projections"
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+proc-macro2 = "1.0"
+quote = "1.0"
+syn = { version = "2.0", features = ["full"] }
+tuple-projections-derive = { path = "tuple-projections-derive", version = "0.1.0" }
+trybuild = "1.0"
+
+[workspace.lints.rust]
+missing_docs = "warn"
+unsafe_code = "deny"
+
+[workspace.lints.rustdoc]
+broken_intra_doc_links = "deny"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+
+[package]
+name = "tuple-projections"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "Type-level left projections for tuple and product types."
+documentation = "https://docs.rs/tuple-projections"
+repository.workspace = true
+license.workspace = true
+keywords = ["tuple", "type-level", "projection", "product-type"]
+categories = ["data-structures", "no-std"]
+
+[dependencies]
+tuple-projections-derive.workspace = true
+
+[dev-dependencies]
+trybuild.workspace = true
+
+[lints]
+workspace = true

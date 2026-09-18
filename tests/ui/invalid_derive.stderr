@@ -1,0 +1,15 @@
+error: `TupleProjection` can only be derived for structs, not enums
+ --> tests/ui/invalid_derive.rs:4:1
+  |
+4 | / enum NotAProduct {
+5 | |     One,
+6 | | }
+  | |_^
+
+error: `TupleProjection` can only be derived for structs, not unions
+  --> tests/ui/invalid_derive.rs:9:1
+   |
+ 9 | / union AlsoNotAProduct {
+10 | |     value: u8,
+11 | | }
+   | |_^

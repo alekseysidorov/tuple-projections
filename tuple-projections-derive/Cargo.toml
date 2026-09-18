@@ -1,0 +1,19 @@
+[package]
+name = "tuple-projections-derive"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "Derive and helper procedural macros for tuple-projections."
+repository.workspace = true
+license.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2.workspace = true
+quote.workspace = true
+syn.workspace = true
+
+[lints]
+workspace = true
