@@ -76,7 +76,11 @@
               };
 
               craneLib = (inputs.crane.mkLib pkgs).overrideToolchain rustToolchain;
-              src = craneLib.cleanCargoSource ./.;
+              # Use nix-devtools' project source so Cargo, README documentation,
+              # and other non-ignored project files share the repository boundary.
+              src = pkgs.projectSource {
+                projectRoot = ./.;
+              };
 
               # Keep dependency compilation separate so build, test and clippy
               # checks reuse the same Cargo artifacts.

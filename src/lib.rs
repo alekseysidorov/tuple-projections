@@ -1,28 +1,16 @@
 #![no_std]
 
-//! Type-level left projections for tuples and product types.
+//! # Overview
+#![doc = include_utils::include_md!("README.md:description")]
 //!
-//! A projection is a type-level relation. If `P: LeftProjectionOf<T>`, then `P` is a
-//! prefix of `T`, and `Remainder` is the suffix satisfying:
+//! # Tuple projections
+#![doc = include_utils::include_md!("README.md:tuple_projection_example")]
 //!
-//! ```text
-//! T = P ++ Remainder
-//! ```
+//! # Product types
+#![doc = include_utils::include_md!("README.md:product_example")]
 //!
-//! ```
-//! use tuple_projections::LeftProjectionOf;
-//!
-//! fn assert_projection<P, T>()
-//! where
-//!     P: LeftProjectionOf<T>,
-//! {
-//! }
-//!
-//! assert_projection::<(u64,), (u64, String, bool)>();
-//! ```
-//!
-//! The [`TupleProjection`] derive treats a struct as an ordered product whose tuple
-//! representation follows the declaration order of its fields.
+//! # FoundationDB-style ordered keys
+#![doc = include_utils::include_md!("README.md:fdb_example")]
 
 extern crate self as tuple_projections;
 
