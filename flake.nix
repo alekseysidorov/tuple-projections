@@ -23,7 +23,8 @@
     };
   };
 
-  outputs = inputs:
+  outputs =
+    inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = inputs.nixpkgs.lib.systems.flakeExposed;
 
@@ -31,11 +32,10 @@
         inputs.treefmt-nix.flakeModule
       ];
 
-      perSystem = { system, ... }:
+      perSystem =
+        { system, ... }:
         let
-          pkgs = inputs.nixpkgs.legacyPackages.${system}.extend (
-            inputs.rust-overlay.overlays.default
-          );
+          pkgs = inputs.nixpkgs.legacyPackages.${system}.extend (inputs.rust-overlay.overlays.default);
 
           rustToolchain = pkgs.rust-bin.stable.latest.default.override {
             extensions = [
@@ -53,13 +53,17 @@
             pname = "tuple-projections";
             version = "0.1.0";
             strictDeps = true;
+            preCheck = "export TRYBUILD=overwrite";
           };
 
           cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 
-          package = craneLib.buildPackage (commonArgs // {
-            inherit cargoArtifacts;
-          });
+          package = craneLib.buildPackage (
+            commonArgs
+            // {
+              inherit cargoArtifacts;
+            }
+          );
         in
         {
           treefmt = {
@@ -80,15 +84,21 @@
           checks = {
             build = package;
 
-            test = craneLib.cargoTest (commonArgs // {
-              inherit cargoArtifacts;
-              cargoTestExtraArgs = "--workspace";
-            });
+            test = craneLib.cargoTest (
+              commonArgs
+              // {
+                inherit cargoArtifacts;
+                cargoTestExtraArgs = "--workspace";
+              }
+            );
 
-            clippy = craneLib.cargoClippy (commonArgs // {
-              inherit cargoArtifacts;
-              cargoClippyExtraArgs = "--workspace --all-targets --all-features -- -D warnings";
-            });
+            clippy = craneLib.cargoClippy (
+              commonArgs
+              // {
+                inherit cargoArtifacts;
+                cargoClippyExtraArgs = "--workspace --all-targets --all-features -- -D warnings";
+              }
+            );
 
             audit = craneLib.cargoAudit {
               inherit src;
