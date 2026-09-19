@@ -107,17 +107,34 @@ ordered-key adapter can use.
 More design context and comparisons with related crates are recorded in
 [`docs/decisions.md`](docs/decisions.md).
 
-## Ordered-map example
+## FoundationDB tuple prefix scans
 
-[`examples/btree_map_index.rs`](examples/btree_map_index.rs) shows how to build
-an in-memory `BTreeMap` with CRUD and FoundationDB-compatible ordered tuple
-keys. It uses the standalone `foundationdb-tuple` crate to encode keys and
-derive byte ranges from tuple subspaces; `MapIndex::iter(prefix)` checks the
-prefix type with `LeftProjectionOf` and searches the corresponding ordered
-range in `O(log n + matches)`. A full-key projection includes the exact row,
-while a shorter prefix selects its descendants. This is still only an
-in-memory example: it does not connect to a FoundationDB cluster, and
-`foundationdb-tuple` is a development-only dependency.
+[`examples/foundationdb_tuple_map.rs`](examples/foundationdb_tuple_map.rs)
+builds a small in-memory `MapIndex<K, V>` to demonstrate how typed tuple
+projections can drive prefix scans over FoundationDB-compatible keys. Its
+`EventKey` is a named struct with `#[derive(TupleProjection)]`, so CRUD uses
+the domain type while the derive supplies its canonical
+`(tenant_id, sequence_number)` representation and compile-time prefix
+relations. Querying with `(tenant_id,)` returns that tenant's events in key
+order, while querying with a full `(tenant_id, sequence_number)` projection
+selects that exact entry.
+
+The example uses the standalone `foundationdb-tuple` crate to pack tuple keys
+into sortable bytes and to obtain a key range for a tuple subspace. Since the
+encoded prefix keys are adjacent in `BTreeMap` order, iteration seeks directly
+to the range instead of checking every key (`O(log n + matches)`). The
+derived `LeftProjectionOf` implementations make an invalid prefix shape a
+compile-time error; the byte encoding and range selection then provide the
+runtime behavior. Decoding a stored key back into `EventKey` uses the derived
+`TupleRepr` conversion as well.
+
+This separation is useful for ordered-key APIs, including FoundationDB-style
+keyspaces: the projection captures the structural rule (“this is a leading
+part of the key”), while the storage adapter chooses how that prefix becomes a
+range. The example is deliberately not a database client: values live in a
+local `BTreeMap`, it opens no FoundationDB connection, and
+`foundationdb-tuple` is only a development dependency. Run it with
+`cargo run --example foundationdb_tuple_map`.
 
 ## License
 
