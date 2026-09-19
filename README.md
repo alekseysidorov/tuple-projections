@@ -1,7 +1,7 @@
 # Tuple projections
 
 [![tests](https://github.com/alekseysidorov/tuple-projections/actions/workflows/ci.yml/badge.svg)](https://github.com/alekseysidorov/tuple-projections/actions/workflows/ci.yml)
-[![MIT/Apache-2 licensed](https://img.shields.io/crates/l/tuple-projections)](./LICENSE)
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](#license)
 
 <!-- ANCHOR: description -->
 `tuple-projections` provides type-safe left projections for tuples and product
@@ -138,4 +138,4 @@ local `BTreeMap`, it opens no FoundationDB connection, and
 
 ## License
 
-Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or [MIT license](LICENSE-MIT), at your option.
+Each crate is licensed under either of the [Apache License, Version 2.0](LICENSE-APACHE) or the [MIT license](LICENSE-MIT), at your option. Both license texts are included in each published crate archive.
