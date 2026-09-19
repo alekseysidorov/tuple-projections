@@ -28,6 +28,33 @@ fn repeated_types_do_not_make_a_projection_ambiguous() {
     assert_projection::<(u8,), (u8, u8, u8), (u8, u8)>();
 }
 
+#[test]
+fn ordinary_tuples_use_themselves_as_tuple_representation() {
+    fn assert_identity_repr<T: TupleRepr<Tuple = T>>() {}
+
+    assert_identity_repr::<()>();
+    assert_identity_repr::<(u64,)>();
+    assert_identity_repr::<(u64, String, bool)>();
+}
+
+#[test]
+fn ordinary_tuples_round_trip_unchanged() {
+    let unit = ();
+    assert_eq!(unit.into_tuple(), ());
+    assert_eq!(<()>::from_tuple(()), ());
+
+    let single = (42_u64,);
+    assert_eq!(single.into_tuple(), (42,));
+    assert_eq!(<(u64,)>::from_tuple((42,)), (42,));
+
+    let multiple = (42_u64, String::from("event"), true);
+    assert_eq!(multiple.into_tuple(), (42, String::from("event"), true));
+    assert_eq!(
+        <(u64, String, bool)>::from_tuple((42, String::from("event"), true)),
+        (42, String::from("event"), true),
+    );
+}
+
 #[derive(Debug, PartialEq, TupleProjection)]
 struct Named<A, B, C> {
     first: A,

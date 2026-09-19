@@ -55,7 +55,8 @@ trait algebra or an HList representation.
 The crate also provides:
 
 - `TupleRepr` for infallible conversion between a product struct and its
-  canonical tuple representation;
+  canonical tuple representation; ordinary tuples implement it as an identity
+  representation;
 - `#[derive(TupleProjection)]` for named, tuple, and unit structs;
 - preservation of normal Rust generics, lifetimes, const generics, and
   `where` clauses.

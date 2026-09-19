@@ -73,7 +73,9 @@ assert_eq!(
 <!-- ANCHOR_END: product_example -->
 
 `EventKey` is treated as the ordered product `(u64, i64, String)`, following
-the declaration order of its fields.
+the declaration order of its fields. Ordinary Rust tuples implement
+`TupleRepr` as identity representations, so `(u64, i64, String)` is also its
+own tuple representation.
 
 ## FoundationDB-style ordered keys
 

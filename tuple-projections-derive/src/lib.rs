@@ -38,18 +38,32 @@ fn tuple_projection_implementations(arity: usize) -> impl Iterator<Item = TokenS
     let types = (0..arity)
         .map(|index| format_ident!("T{index}"))
         .collect::<Vec<_>>();
+    let tuple = tuple_type(&types);
 
-    (0..=arity).map(move |prefix_len| {
-        let target = tuple_type(&types);
+    let tuple_repr = quote! {
+        impl<#(#types),*> ::tuple_projections::TupleRepr for #tuple {
+            type Tuple = Self;
+
+            fn into_tuple(self) -> Self::Tuple {
+                self
+            }
+
+            fn from_tuple(tuple: Self::Tuple) -> Self {
+                tuple
+            }
+        }
+    };
+
+    std::iter::once(tuple_repr).chain((0..=arity).map(move |prefix_len| {
         let prefix = tuple_type(&types[..prefix_len]);
         let remainder = tuple_type(&types[prefix_len..]);
 
         quote! {
-            impl<#(#types),*> ::tuple_projections::LeftProjectionOf<#target> for #prefix {
+            impl<#(#types),*> ::tuple_projections::LeftProjectionOf<#tuple> for #prefix {
                 type Remainder = #remainder;
             }
         }
-    })
+    }))
 }
 
 fn tuple_type<T: quote::ToTokens>(types: &[T]) -> TokenStream2 {
