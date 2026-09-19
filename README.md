@@ -110,11 +110,14 @@ More design context and comparisons with related crates are recorded in
 ## Ordered-map example
 
 [`examples/btree_map_index.rs`](examples/btree_map_index.rs) shows how to build
-an in-memory `BTreeMap` with basic CRUD and FoundationDB-style ordered tuple
-keys. Its `MapIndex::iter(prefix)` checks the prefix type with
-`LeftProjectionOf` and scans entries using a small example-local matcher, so it
-is intentionally `O(n)`. It does not implement FoundationDB encoding or
-database access.
+an in-memory `BTreeMap` with CRUD and FoundationDB-compatible ordered tuple
+keys. It uses the standalone `foundationdb-tuple` crate to encode keys and
+derive byte ranges from tuple subspaces; `MapIndex::iter(prefix)` checks the
+prefix type with `LeftProjectionOf` and searches the corresponding ordered
+range in `O(log n + matches)`. A full-key projection includes the exact row,
+while a shorter prefix selects its descendants. This is still only an
+in-memory example: it does not connect to a FoundationDB cluster, and
+`foundationdb-tuple` is a development-only dependency.
 
 ## License
 
