@@ -111,9 +111,10 @@ More design context and comparisons with related crates are recorded in
 
 [`examples/btree_map_index.rs`](examples/btree_map_index.rs) shows how to build
 an in-memory `BTreeMap` with basic CRUD and FoundationDB-style ordered tuple
-keys. It also demonstrates a tenant-prefix range and how `LeftProjectionOf`
-checks that the prefix matches the full key shape at compile time. The example
-does not implement FoundationDB encoding or database access.
+keys. Its `MapIndex::iter(prefix)` checks the prefix type with
+`LeftProjectionOf` and scans entries using a small example-local matcher, so it
+is intentionally `O(n)`. It does not implement FoundationDB encoding or
+database access.
 
 ## License
 
