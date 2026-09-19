@@ -107,13 +107,13 @@ ordered-key adapter can use.
 More design context and comparisons with related crates are recorded in
 [`docs/decisions.md`](docs/decisions.md).
 
-## In-memory `MapIndex` sketch
+## Ordered-map example
 
 [`examples/btree_map_index.rs`](examples/btree_map_index.rs) shows how to build
-a small ordered map over `BTreeMap`, using `TupleRepr` for canonical keys and
-`LeftProjectionOf` to constrain a tenant-prefix range. It is an in-memory API
-sketch, not a replacement for Exonum's persistent or merkelized
-[`MapIndex`](https://docs.rs/exonum-merkledb/latest/exonum_merkledb/indexes/struct.MapIndex.html).
+an in-memory `BTreeMap` with basic CRUD and FoundationDB-style ordered tuple
+keys. It also demonstrates a tenant-prefix range and how `LeftProjectionOf`
+checks that the prefix matches the full key shape at compile time. The example
+does not implement FoundationDB encoding or database access.
 
 ## License
 
