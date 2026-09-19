@@ -67,17 +67,13 @@ where
     /// part of the index's full key type. The range lookup is `O(log n + m)`
     /// for `m` matching keys. A full-key prefix is included as an exact match;
     /// `Subspace::range` itself covers strict descendants only.
-    #[expect(
-        clippy::needless_pass_by_value,
-        reason = "accept tuple literals by value for a concise prefix-query API"
-    )]
-    fn iter<P>(&self, prefix: P) -> impl Iterator<Item = (&[u8], &V)>
+    fn iter<P>(&self, prefix: &P) -> impl Iterator<Item = (&[u8], &V)>
     where
         P: TuplePack + LeftProjectionOf<K>,
     {
-        let prefix_subspace = self.subspace.subspace(&prefix);
+        let prefix_subspace = self.subspace.subspace(prefix);
         let (begin, end) = prefix_subspace.range();
-        let exact_key = self.subspace.pack(&prefix);
+        let exact_key = self.subspace.pack(prefix);
         let exact = self
             .entries
             .get_key_value(&exact_key)
@@ -117,7 +113,7 @@ fn main() {
 
     // A one-element projection selects every event for tenant 7.
     let tenant_events: Vec<_> = events
-        .iter((7_i64,))
+        .iter(&(7_i64,))
         .map(|(key, value)| {
             let tuple = events
                 .subspace
@@ -132,7 +128,7 @@ fn main() {
     );
 
     // The full key is also a valid projection and selects that exact map row.
-    let exact: Vec<_> = events.iter((7_i64, 2_i64)).collect();
+    let exact: Vec<_> = events.iter(&(7_i64, 2_i64)).collect();
     assert_eq!(exact.len(), 1);
     let tuple = events
         .subspace
@@ -141,7 +137,7 @@ fn main() {
     assert_eq!(EventKey::from_tuple(tuple), second);
 
     // Empty projection selects the full index.
-    assert_eq!(events.iter(()).count(), 3);
+    assert_eq!(events.iter(&()).count(), 3);
 
     assert_eq!(events.remove(&first), Some("first event"));
     assert!(!events.contains_key(&first));
