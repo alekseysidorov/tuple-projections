@@ -72,7 +72,7 @@
             commonArgs = {
               inherit src;
               pname = "tuple-projections";
-              version = "0.1.0";
+              version = "0.1.1";
               strictDeps = true;
               # trybuild diagnostics vary between isolated Cargo environments;
               # the cases still have to fail, while local Cargo checks compare snapshots.

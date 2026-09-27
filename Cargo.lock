@@ -279,7 +279,7 @@ dependencies = [
 
 [[package]]
 name = "tuple-projections"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "foundationdb-tuple",
  "include-utils",
@@ -289,7 +289,7 @@ dependencies = [
 
 [[package]]
 name = "tuple-projections-derive"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "proc-macro2",
  "quote",
