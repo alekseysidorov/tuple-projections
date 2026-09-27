@@ -3,7 +3,7 @@ members = ["crates/tuple-projections", "crates/tuple-projections-derive"]
 resolver = "3"
 
 [workspace.package]
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 rust-version = "1.92"
 repository = "https://github.com/alekseysidorov/tuple-projections"
@@ -18,7 +18,7 @@ quote = "1.0"
 syn = { version = "3.0", features = ["full"] }
 include-utils = "0.2"
 foundationdb-tuple = { version = "0.11", default-features = false }
-tuple-projections-derive = { path = "crates/tuple-projections-derive", version = "0.1.1" }
+tuple-projections-derive = { path = "crates/tuple-projections-derive", version = "0.1.2" }
 trybuild = "1.0"
 
 [workspace.lints.rust]
