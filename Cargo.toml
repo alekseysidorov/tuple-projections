@@ -1,13 +1,16 @@
 [workspace]
-members = ["tuple-projections-derive"]
+members = ["crates/tuple-projections", "crates/tuple-projections-derive"]
 resolver = "3"
 
 [workspace.package]
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 rust-version = "1.92"
 repository = "https://github.com/alekseysidorov/tuple-projections"
 license = "MIT OR Apache-2.0"
+
+[workspace.metadata.crane]
+name = "tuple-projections"
 
 [workspace.dependencies]
 proc-macro2 = "1.0"
@@ -15,7 +18,7 @@ quote = "1.0"
 syn = { version = "3.0", features = ["full"] }
 include-utils = "0.2"
 foundationdb-tuple = { version = "0.11", default-features = false }
-tuple-projections-derive = { path = "tuple-projections-derive", version = "0.1.0" }
+tuple-projections-derive = { path = "crates/tuple-projections-derive", version = "0.1.1" }
 trybuild = "1.0"
 
 [workspace.lints.rust]
@@ -28,27 +31,3 @@ broken_intra_doc_links = "deny"
 [workspace.lints.clippy]
 pedantic = { level = "warn", priority = -1 }
 module_name_repetitions = "allow"
-
-[package]
-name = "tuple-projections"
-version.workspace = true
-edition.workspace = true
-rust-version.workspace = true
-description = "Type-safe left projections for tuples and product types."
-readme = "README.md"
-documentation = "https://docs.rs/tuple-projections"
-repository.workspace = true
-license.workspace = true
-keywords = ["tuple", "type-level", "projection", "product-type"]
-categories = ["data-structures", "no-std"]
-
-[dependencies]
-include-utils.workspace = true
-tuple-projections-derive.workspace = true
-
-[dev-dependencies]
-foundationdb-tuple.workspace = true
-trybuild.workspace = true
-
-[lints]
-workspace = true

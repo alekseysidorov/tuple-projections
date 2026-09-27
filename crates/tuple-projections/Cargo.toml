@@ -1,0 +1,23 @@
+[package]
+name = "tuple-projections"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "Type-safe left projections for tuples and product types."
+readme = "README.md"
+documentation = "https://docs.rs/tuple-projections"
+repository.workspace = true
+license.workspace = true
+keywords = ["tuple", "type-level", "projection", "product-type"]
+categories = ["data-structures", "no-std"]
+
+[dependencies]
+include-utils.workspace = true
+tuple-projections-derive.workspace = true
+
+[dev-dependencies]
+foundationdb-tuple.workspace = true
+trybuild.workspace = true
+
+[lints]
+workspace = true
