@@ -91,14 +91,18 @@
             # Keep semver compatibility as an explicit runnable check. It is
             # intentionally a package rather than a default flake check because
             # the registry baseline exists only after the crate is published.
-            semverCheck = pkgs.writeShellApplication {
+            semverCheck = pkgs.writeNushellApplication {
               name = "check-cargo-semver";
               runtimeInputs = [
                 rustToolchain
                 pkgs.cargo-semver-checks
               ];
               text = ''
-                exec cargo semver-checks --workspace "$@"
+                def main [...args: string] {
+                  # Remove rustdoc artifacts from previous toolchain/check runs.
+                  ^cargo clean
+                  ^cargo semver-checks --workspace ...$args
+                }
               '';
             };
           in
