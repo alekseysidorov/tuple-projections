@@ -64,6 +64,13 @@ The crate also provides:
 The derive implementation is kept in the separate
 `tuple-projections-derive` proc-macro crate and re-exported by the main crate.
 
+**Field declaration order is semantic.** It defines the derived type's
+canonical positional representation. Reordering fields with different types
+changes `TupleRepr::Tuple`; reordering fields with the same type still changes
+the positional meaning of values and projections. Consumers using the
+representation for ordered keys must treat a reorder as a change to their key
+layout.
+
 ## Alternatives considered
 
 ### `tuple_split`
