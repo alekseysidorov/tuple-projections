@@ -23,6 +23,12 @@ pub trait LeftProjectionOf<T> {
 }
 
 /// Converts a product type to and from its canonical tuple representation.
+///
+/// **Field declaration order is semantic.** For types using
+/// `#[derive(TupleProjection)]`, the tuple follows the source declaration
+/// order. Reordering fields with different types changes the associated tuple
+/// type; reordering fields with the same type still changes the positional
+/// meaning of values and projections.
 pub trait TupleRepr: Sized {
     /// The ordered tuple of field types represented by `Self`.
     type Tuple;

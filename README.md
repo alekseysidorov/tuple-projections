@@ -77,6 +77,11 @@ the declaration order of its fields. Ordinary Rust tuples implement
 `TupleRepr` as identity representations, so `(u64, i64, String)` is also its
 own tuple representation.
 
+**Field declaration order is semantic.** Reordering fields with different
+types changes the tuple type; reordering fields with the same type still
+changes the positional meaning of fields and projections. If the representation
+is used as an ordered key, treat a reorder as a change to that key layout.
+
 ## FoundationDB-style ordered keys
 
 <!-- ANCHOR: fdb_example -->
