@@ -52,15 +52,25 @@
             # this keeps rust-bin and all check tooling on the same pkgs set.
             pkgs = inputs.nixpkgs.legacyPackages.${system}.extend defaultOverlay;
 
-            rustToolchain = pkgs.rust-bin.stable.latest.default.override {
-              extensions = [
-                "clippy"
-                "rust-src"
-                "rustfmt"
-              ];
+            # Keep the minimum supported compiler explicit and use a known
+            # current stable compiler for normal development and packaging.
+            rustVersions = {
+              msrv = "1.93.0";
+              stable = "1.98.0";
             };
 
-            craneLib = (inputs.crane.mkLib pkgs).overrideToolchain rustToolchain;
+            rustToolchains = {
+              msrv = pkgs.rust-bin.stable.${rustVersions.msrv}.default;
+              stable = pkgs.rust-bin.stable.${rustVersions.stable}.default.override {
+                extensions = [
+                  "clippy"
+                  "rust-src"
+                  "rustfmt"
+                ];
+              };
+            };
+
+            craneLib = (inputs.crane.mkLib pkgs).overrideToolchain rustToolchains.stable;
             # Use nix-devtools' project source so Cargo, README documentation,
             # and other non-ignored project files share the repository boundary.
             src = pkgs.projectSource {
@@ -94,7 +104,9 @@
             semverCheck = pkgs.writeNushellApplication {
               name = "check-cargo-semver";
               runtimeInputs = [
-                rustToolchain
+                # cargo-semver-checks requires rustc >= 1.93; keep this check
+                # on MSRV while regular project checks use current stable.
+                rustToolchains.msrv
                 pkgs.cargo-semver-checks
               ];
               text = ''
@@ -114,7 +126,7 @@
                 nixfmt.enable = true;
                 rustfmt = {
                   enable = true;
-                  package = rustToolchain;
+                  package = rustToolchains.stable;
                 };
                 taplo.enable = true;
               };
@@ -152,7 +164,7 @@
 
             devShells.default = pkgs.mkShell {
               packages = [
-                rustToolchain
+                rustToolchains.stable
                 pkgs.cargo-audit
                 pkgs.cargo-nextest
                 pkgs.cargo-semver-checks
