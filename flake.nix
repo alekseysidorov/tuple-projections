@@ -81,8 +81,6 @@
             # checks reuse the same Cargo artifacts.
             commonArgs = {
               inherit src;
-              pname = "tuple-projections";
-              version = "0.1.3";
               strictDeps = true;
               # trybuild diagnostics vary between isolated Cargo environments;
               # the cases still have to fail, while local Cargo checks compare snapshots.
