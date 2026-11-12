@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3] - 2026-11-12
+
+### Fixed
+
+- Fixed `TupleProjection` derive for single-field tuple structs so newtypes use
+  the correct one-element tuple representation.
+
 ## [0.1.2] - 2026-09-27
 
 ### Changed
