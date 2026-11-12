@@ -86,12 +86,14 @@ fn derive_tuple_projection_impl(input: &DeriveInput) -> syn::Result<TokenStream2
                     .iter()
                     .map(|field| field.ident.as_ref().expect("named field"))
                     .collect::<Vec<_>>();
-                let tuple_names = tuple_type(&names);
+
                 let types = fields
                     .named
                     .iter()
                     .map(|field| &field.ty)
                     .collect::<Vec<_>>();
+
+                let tuple_names = tuple_type(&names);
 
                 (
                     types,
@@ -109,12 +111,14 @@ fn derive_tuple_projection_impl(input: &DeriveInput) -> syn::Result<TokenStream2
                 let names = (0..fields.unnamed.len())
                     .map(|index| format_ident!("field_{index}"))
                     .collect::<Vec<_>>();
-                let tuple_names = tuple_type(&names);
+
                 let types = fields
                     .unnamed
                     .iter()
                     .map(|field| &field.ty)
                     .collect::<Vec<_>>();
+
+                let tuple_names = tuple_type(&names);
 
                 (
                     types,
