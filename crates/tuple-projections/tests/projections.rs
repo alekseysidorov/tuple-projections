@@ -66,6 +66,9 @@ struct Named<A, B, C> {
 struct Tuple<'a, T, const N: usize>(&'a str, T, [u8; N]);
 
 #[derive(Debug, PartialEq, TupleProjection)]
+struct Newtype(u64);
+
+#[derive(Debug, PartialEq, TupleProjection)]
 struct Unit;
 
 #[test]
@@ -103,6 +106,17 @@ fn tuple_struct_preserves_lifetimes_const_generics_and_where_clauses() {
     assert_eq!(convert(value), Tuple("prefix", 7, [1, 2]));
 
     assert_projection::<(&str,), Tuple<'static, u16, 2>, (u16, [u8; 2])>();
+}
+
+#[test]
+fn newtype_struct_has_a_single_element_tuple_representation() {
+    assert_projection::<(), Newtype, (u64,)>();
+    assert_projection::<(u64,), Newtype, ()>();
+
+    let value = Newtype(42);
+    let tuple = value.into_tuple();
+    assert_eq!(tuple, (42,));
+    assert_eq!(Newtype::from_tuple(tuple), Newtype(42));
 }
 
 #[test]
